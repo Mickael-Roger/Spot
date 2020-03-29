@@ -81,7 +81,7 @@ int CorrArriereDroitPied = 5; // 5
 int CorrArriereGauchePied = 0;
 int CorrAvantDroitBras = -5; // -3
 int CorrAvantGaucheBras = 5; // 10
-int CorrArriereDroitBras = 0; // 5
+int CorrArriereDroitBras = -5; // 5
 int CorrArriereGaucheBras = 0; // 5
 int CorrAvantDroitEpaule = -20;
 int CorrAvantGaucheEpaule = 10;
@@ -387,6 +387,48 @@ void laydown(){
 }
 
 
+///////////////////
+// Turn             IN PROGRESS
+///////////////////
+
+void turn(){
+
+  movearm(RIGHT_BACK_ARM, 180);
+  movearm(LEFT_BACK_ARM, 180);
+
+  myDelay(500);
+
+  movearm(RIGHT_FRONT_SHOULDER, 60);
+  movearm(LEFT_FRONT_SHOULDER, 120);
+  movearm(RIGHT_BACK_SHOULDER, 120);
+  movearm(LEFT_BACK_SHOULDER, 60);
+
+  myDelay(500);
+
+  movearm(LEFT_BACK_FOOT, 150);
+  myDelay(100);
+  movearm(LEFT_BACK_SHOULDER, 120);
+  
+  myDelay(500);
+  
+
+  movearm(RIGHT_BACK_FOOT, 190);
+  myDelay(50);
+  movearm(RIGHT_BACK_SHOULDER, 60);
+  myDelay(100);
+  movearm(RIGHT_BACK_FOOT, 140);
+  
+  myDelay(500);
+
+  movearm(RIGHT_FRONT_SHOULDER, 90);
+  movearm(LEFT_FRONT_SHOULDER, 90);
+  movearm(RIGHT_BACK_SHOULDER, 90);
+  movearm(LEFT_BACK_SHOULDER, 90);  
+
+  myDelay(200);
+
+}
+
 
 ///////////////////
 // Start MPU6050
@@ -559,6 +601,12 @@ void execOrder(){
               getup();
               action = "";
             } 
+            else{
+              if (action == "turn"){
+                turn();
+                action = "";
+              } 
+            }
           }
         }
       }
@@ -631,6 +679,8 @@ void setup() {
   laydown();
   myDelay(500);
   getup();
+  myDelay(500);
+  stop();
   
 
   // Start Gyro
