@@ -29,6 +29,12 @@
 
 
 
+///////////////////
+// Rotation sens
+///////////////////
+#define ROTATION_RIGHT 0
+#define ROTATION_LEFT 1
+
 
 ///////////////////
 // Body part ID
@@ -388,44 +394,89 @@ void laydown(){
 
 
 ///////////////////
-// Turn             IN PROGRESS
+// Turn
 ///////////////////
 
-void turn(){
+void turn(bool sens){
 
-  movearm(RIGHT_BACK_ARM, 180);
-  movearm(LEFT_BACK_ARM, 180);
-
-  myDelay(500);
-
-  movearm(RIGHT_FRONT_SHOULDER, 60);
-  movearm(LEFT_FRONT_SHOULDER, 120);
-  movearm(RIGHT_BACK_SHOULDER, 120);
-  movearm(LEFT_BACK_SHOULDER, 60);
-
-  myDelay(500);
-
-  movearm(LEFT_BACK_FOOT, 150);
-  myDelay(100);
-  movearm(LEFT_BACK_SHOULDER, 120);
+  switch(sens){
   
-  myDelay(500);
+    case ROTATION_RIGHT:
   
+      movearm(RIGHT_BACK_ARM, 180);
+      movearm(LEFT_BACK_ARM, 180);
+    
+      myDelay(200);
+    
+      movearm(RIGHT_FRONT_SHOULDER, 70);
+      movearm(LEFT_FRONT_SHOULDER, 110);
+      movearm(RIGHT_BACK_SHOULDER, 110);
+      movearm(LEFT_BACK_SHOULDER, 70);
+    
+      myDelay(300);
+    
+      movearm(LEFT_BACK_FOOT, 150);
+      myDelay(100);
+      movearm(LEFT_BACK_SHOULDER, 120);
+      
+      myDelay(300);
+      
+    
+      movearm(RIGHT_BACK_FOOT, 190);
+      myDelay(50);
+      movearm(RIGHT_BACK_SHOULDER, 60);
+      myDelay(100);
+      movearm(RIGHT_BACK_FOOT, 140);
+      
+      myDelay(300);
+    
+      movearm(RIGHT_FRONT_SHOULDER, 90);
+      movearm(LEFT_FRONT_SHOULDER, 90);
+      movearm(RIGHT_BACK_SHOULDER, 90);
+      movearm(LEFT_BACK_SHOULDER, 90);  
+    
+      myDelay(200);
+      break;
 
-  movearm(RIGHT_BACK_FOOT, 190);
-  myDelay(50);
-  movearm(RIGHT_BACK_SHOULDER, 60);
-  myDelay(100);
-  movearm(RIGHT_BACK_FOOT, 140);
+
+    case ROTATION_LEFT:
   
-  myDelay(500);
-
-  movearm(RIGHT_FRONT_SHOULDER, 90);
-  movearm(LEFT_FRONT_SHOULDER, 90);
-  movearm(RIGHT_BACK_SHOULDER, 90);
-  movearm(LEFT_BACK_SHOULDER, 90);  
-
-  myDelay(200);
+      movearm(RIGHT_BACK_ARM, 180);
+      movearm(LEFT_BACK_ARM, 180);
+    
+      myDelay(200);
+    
+      movearm(RIGHT_FRONT_SHOULDER, 110);
+      movearm(LEFT_FRONT_SHOULDER, 70);
+      movearm(RIGHT_BACK_SHOULDER, 70);
+      movearm(LEFT_BACK_SHOULDER, 110);
+    
+      myDelay(300);
+    
+      movearm(RIGHT_BACK_FOOT, 150);
+      myDelay(100);
+      movearm(RIGHT_BACK_SHOULDER, 120);
+      
+      myDelay(300);
+      
+    
+      movearm(LEFT_BACK_FOOT, 190);
+      myDelay(50);
+      movearm(LEFT_BACK_SHOULDER, 60);
+      myDelay(100);
+      movearm(LEFT_BACK_FOOT, 140);
+      
+      myDelay(300);
+    
+      movearm(RIGHT_FRONT_SHOULDER, 90);
+      movearm(LEFT_FRONT_SHOULDER, 90);
+      movearm(RIGHT_BACK_SHOULDER, 90);
+      movearm(LEFT_BACK_SHOULDER, 90);  
+    
+      myDelay(200);
+      break;
+      
+  }
 
 }
 
@@ -565,6 +616,9 @@ void stable(){
 }
 
 
+void returnOK(){
+  Serial.println("{\"result\": 1}");
+}
 
 ///////////////////
 // Execute order received
@@ -580,32 +634,45 @@ void execOrder(){
     if (action == "stop"){
       stop();
       action = "";
+      returnOK();
     }
     else{
       if (action == "stable"){
         stable();
         action = "";
+        returnOK();
       }
       else{
         if (action == "status"){
           spotStatus();
           action = "";
+          returnOK();
         }
         else{
           if (action == "laydown"){
             laydown();
             action = "";
+            returnOK();
           }
           else{
             if (action == "getup"){
               getup();
               action = "";
+              returnOK();
             } 
             else{
-              if (action == "turn"){
-                turn();
+              if (action == "right"){
+                turn(ROTATION_RIGHT);
                 action = "";
-              } 
+                returnOK();
+              }
+              else{
+                if (action == "left"){
+                  turn(ROTATION_LEFT);
+                  action = "";
+                  returnOK();
+                } 
+              }
             }
           }
         }
