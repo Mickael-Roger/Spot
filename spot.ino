@@ -12,20 +12,20 @@
 // PIN used for Servos. Changed if you need to
 ///////////////////
 
-#define PIN_RIGHT_FRONT_FOOT 12
-#define PIN_LEFT_FRONT_FOOT 8
-#define PIN_RIGHT_BACK_FOOT 4
-#define PIN_LEFT_BACK_FOOT 6
+#define PIN_RIGHT_FRONT_FOOT 6
+#define PIN_LEFT_FRONT_FOOT 10
+#define PIN_RIGHT_BACK_FOOT 11
+#define PIN_LEFT_BACK_FOOT 4
 
-#define PIN_RIGHT_FRONT_ARM 11
-#define PIN_RIGHT_BACK_ARM 3
-#define PIN_LEFT_FRONT_ARM 9
-#define PIN_LEFT_BACK_ARM 5
+#define PIN_RIGHT_FRONT_ARM 7
+#define PIN_RIGHT_BACK_ARM 13
+#define PIN_LEFT_FRONT_ARM 8
+#define PIN_LEFT_BACK_ARM 2
 
-#define PIN_RIGHT_FRONT_SHOULDER 10
-#define PIN_RIGHT_BACK_SHOULDER 2
-#define PIN_LEFT_FRONT_SHOULDER 7
-#define PIN_LEFT_BACK_SHOULDER 13
+#define PIN_RIGHT_FRONT_SHOULDER 5
+#define PIN_RIGHT_BACK_SHOULDER 12
+#define PIN_LEFT_FRONT_SHOULDER 9
+#define PIN_LEFT_BACK_SHOULDER 3
 
 
 
@@ -81,18 +81,18 @@ Servo AvantGauchePied;
 // Servos position correction
 ///////////////////
 
-int CorrAvantDroitPied = -15; // -10
-int CorrAvantGauchePied = 0;
-int CorrArriereDroitPied = 5; // 5
-int CorrArriereGauchePied = 0;
-int CorrAvantDroitBras = -5; // -3
-int CorrAvantGaucheBras = 5; // 10
-int CorrArriereDroitBras = -5; // 5
-int CorrArriereGaucheBras = 0; // 5
-int CorrAvantDroitEpaule = -20;
-int CorrAvantGaucheEpaule = 10;
-int CorrArriereDroitEpaule = 2;
-int CorrArriereGaucheEpaule = -10;
+int CorrAvantDroitPied = -8;
+int CorrAvantGauchePied = -1;
+int CorrArriereDroitPied = 5;
+int CorrArriereGauchePied = 1;
+int CorrAvantDroitBras = -6;
+int CorrAvantGaucheBras = -4;
+int CorrArriereDroitBras = 4;
+int CorrArriereGaucheBras = 3;
+int CorrAvantDroitEpaule = -4;
+int CorrAvantGaucheEpaule = 0;
+int CorrArriereDroitEpaule = 3;
+int CorrArriereGaucheEpaule = 5;
 
 
 ///////////////////
@@ -551,7 +551,7 @@ void spotStatus(){
 void adjust_front(float angle){
 
   // Go down the front
-  if( angle > 2.5 ){
+  if( angle < -2.5 ){
     CorrAvantDroitPied = CorrAvantDroitPied + abs(round(angle/2));
     CorrAvantGauchePied = CorrAvantGauchePied - abs(round(angle/2));
     CorrAvantDroitBras = CorrAvantDroitBras - abs(round(angle/2));
@@ -560,7 +560,7 @@ void adjust_front(float angle){
   }
 
   // Go up the front
-  if( angle < -2.5 ){
+  if( angle > 2.5 ){
     CorrAvantDroitPied = CorrAvantDroitPied - abs(round(angle/2));
     CorrAvantGauchePied = CorrAvantGauchePied + abs(round(angle/2));
     CorrAvantDroitBras = CorrAvantDroitBras + abs(round(angle/2));
@@ -573,7 +573,7 @@ void adjust_front(float angle){
 void adjust_side(float angle){
 
   // Go down left
-  if( angle > 2.5 ){
+  if( angle < -2.5 ){
     
     CorrAvantDroitPied = CorrAvantDroitPied - abs(round(angle/4));
     CorrAvantDroitBras = CorrAvantDroitBras + abs(round(angle/4));
@@ -589,7 +589,7 @@ void adjust_side(float angle){
   }
 
  // Go down right
-  if( angle < -2.5 ){
+  if( angle > 2.5 ){
 
     CorrAvantDroitPied = CorrAvantDroitPied + abs(round(angle/2));
     CorrAvantDroitBras = CorrAvantDroitBras - abs(round(angle/2));
@@ -745,15 +745,17 @@ void setup() {
   // Begin lay down, then get up
   laydown();
   myDelay(500);
-  getup();
+//  getup();
   myDelay(500);
-  stop();
+//  stop();
   
 
   // Start Gyro
   startGyro();
 
   delay(1000);
+
+//  stable();
   
 }
 
